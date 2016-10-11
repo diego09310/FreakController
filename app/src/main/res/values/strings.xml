@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FreakController</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="analog">Analog</string>
+    <string name="l2">L2</string>
+    <string name="r2">R2</string>
+    <string name="l1">L1</string>
+    <string name="r1">R1</string>
+</resources>

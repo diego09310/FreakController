@@ -1,0 +1,3 @@
+1st version: send command (interrupts)
+2nd version: "polling"+int, 25MB memory, peaks up to 20% CPU, usually ~5%/0% when not used
+3rd version: change images and buttons, use 2 joysticks
