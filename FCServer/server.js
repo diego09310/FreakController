@@ -104,36 +104,5 @@ net.createServer(function (socket) {
 			console.log(err);
 			console.log("Tecla no reconocida");
 		}
-		
-
-
-/*
-		console.log("poll: '" + data.toString() + "'");
-
-		if (false){
-		if (key == "suspend") {
-			exec('sudo systemctl suspend', function (error, stdout, stderr) {
-				if (error !== null) {
-					console.log('Error while sleeping (sudo?)');
-				} else {
-					console.log('Sleeping...');
-				}
-			});
-		} else {
-			try {
-				if (key.charAt(0) == "_") {
-					if (key.charAt(key.length-1) == p)
-						robot.keyToggle(key.slice(1, -1), "down");
-					else
-						robot.keyToggle(key.slice(1, -1), "up");
-				} else {
-					robot.keyTap(key);
-				}
-			} catch (err) {
-				console.log("key: '" + key + "'");
-				console.log("Tecla no reconocida");
-			}
-		}
-		}*/
 	});
 }).listen(port);

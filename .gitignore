@@ -8,6 +8,8 @@
 /captures
 .externalNativeBuild
 
+FCServer/report.txt
+FCServer/v1_server.js
 
 # Created by https://www.gitignore.io/api/android,linux,node
 
