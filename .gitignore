@@ -10,6 +10,7 @@
 
 FCServer/report.txt
 FCServer/v1_server.js
+FCServer/tests
 
 # Created by https://www.gitignore.io/api/android,linux,node
 
@@ -111,6 +112,7 @@ build/Release
 
 # Dependency directories
 node_modules
+node_modules*
 jspm_packages
 
 # Optional npm cache directory
