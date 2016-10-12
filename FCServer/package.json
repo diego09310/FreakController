@@ -1,0 +1,27 @@
+{
+  "name": "fcserver",
+  "version": "0.3.0",
+  "description": "Server for the FreakController app",
+  "main": "server.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "robotjs": "^0.4.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diego09310/FreakController.git"
+  },
+  "author": "Diego Avendaño",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diego09310/FreakController/issues"
+  },
+  "homepage": "https://github.com/diego09310/FreakController#readme"
+}
