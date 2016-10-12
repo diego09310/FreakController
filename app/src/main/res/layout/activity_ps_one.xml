@@ -53,36 +53,59 @@
         android:layout_centerHorizontal="true"
         android:text="@string/analog" />
 
-    <Button
-        android:id="@+id/select_button"
-        android:layout_width="50dp"
-        android:layout_height="25dp"
-        android:onClick="sendKey"
-        android:tag="SELECT"
-        android:background="@drawable/ic_select"
-        android:layout_alignTop="@+id/joystickViewCross"
-        android:layout_toEndOf="@id/joystickViewCross"
-        android:layout_marginStart="5dp"/>
-
-    <!--  <TextView
-        android:id="@+id/select_text"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/select_button"
-        android:textColor="#000"
-        android:textSize="15sp"
-        android:layout_toEndOf="@id/joystickViewCross"
-        android:text="SELECT" />-->
+        android:layout_alignTop="@+id/joystickViewCross"
+        android:layout_toEndOf="@id/joystickViewCross" >
+        <Button
+            android:id="@+id/select_button"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:onClick="sendKey"
+            android:tag="SELECT"
+            android:background="@drawable/ic_select"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="5dp" />
 
-    <Button
-        android:id="@+id/start_button"
-        android:layout_width="50dp"
-        android:layout_height="25dp"
-        android:onClick="sendKey"
-        android:tag="START"
-        android:background="@drawable/ic_start"
+        <TextView
+            android:id="@+id/select_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/select_button"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:text="@string/select" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/joystickViewShapes"
-        android:layout_toStartOf="@id/joystickViewShapes" />
+        android:layout_toStartOf="@id/joystickViewShapes"
+        tools:ignore="RelativeOverlap">
+
+        <Button
+            android:id="@+id/start_button"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:onClick="sendKey"
+            android:tag="START"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_start" />
+
+        <TextView
+            android:id="@+id/start_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_button"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:text="@string/start" />
+    </RelativeLayout>
+
 
     <Button
         android:id="@+id/l2_button"
