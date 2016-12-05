@@ -7,14 +7,29 @@ var states = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var new_states = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var changes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var bit = {select:0, start:1, up:2, right:3, down:4, left:5, l2:6, r2:7, l1:8, r1: 9, triangle:10, circle:11, x: 12, square:13};
-var commands = {select:"s", start:"j", up:"up", right:"right", down:"down", left:"left", l2:null, r2:null, l1:null, r1: null, triangle:"y", circle:"backspace", x: "x", square:"z"};
-
+//var commands = {select:"space", start:"enter", up:"up", right:"right", down:"down", left:"left", l2:null, r2:null, l1:null, r1: null, triangle:"y", circle:"backspace", x: "Z", square:"X"};
+var commands_sets = {epsxe : {select:"c", start:"j", up:"up", right:"right", down:"down", left:"left", l2:"e", r2:"p", l1:"w", r1: "l", triangle:"y", circle:"backspace", x: "x", square:"z"},
+                	 kodi  : {select:"c", start:"enter", up:"up", right:"right", down:"down", left:"left", l2:"audio_vol_down", r2:"pagedown", l1:"audio_vol_up", r1: "pageup", triangle:"escape", circle:"backspace", x: "space", square:null}};
 
 // var server = net.createServer(finc
 net.createServer(function (socket) {
 	socket.on('data', function(data) {
-		var key = parseInt(data.toString().slice(0, -1));
-		//console.log("key: '" + key + "'");
+		var set_key = data.toString().slice(0, -1).split(":");
+		var set = set_key[0];
+		var key = parseInt(set_key[1]);
+		var commands;
+		switch (set) {
+			case "epsxe":
+				commands = commands_sets.epsxe;
+				break;
+			case "kodi":
+				commands = commands_sets.kodi;
+				break;
+			default:
+				commands = commands_sets.kodi;
+
+		}
+		//console.log("key: '" + key + "', set: '" + set);
 		//console.log("states: " + states);
 		//console.log("new_states: " + new_states);
 		//console.log("changes: " + changes);*/

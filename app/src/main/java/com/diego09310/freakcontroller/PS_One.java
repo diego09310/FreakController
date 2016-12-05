@@ -77,6 +77,7 @@ public class PS_One extends Activity {
     private Socket socket;
     private static final int SERVERPORT = 9000;
     private static final String SERVER_IP = "192.168.0.120";
+    private static final  String MODE = "epsxe";
 
     class ClientThread implements Runnable {
         public void run() {
@@ -88,7 +89,7 @@ public class PS_One extends Activity {
                 PrintWriter out = new PrintWriter(new BufferedWriter(
                         new OutputStreamWriter(socket.getOutputStream())),
                         true);
-                out.println(command);
+                out.println(MODE + ":" + command);
             } catch (ConnectException e) {
                 showToast("Failed to connect to server", Toast.LENGTH_SHORT);
             } /*catch (UnknownHostException e) {
