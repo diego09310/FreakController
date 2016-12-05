@@ -3,6 +3,7 @@ package com.diego09310.freakcontroller;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -14,6 +15,10 @@ import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
+//UDP
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+
 import java.net.UnknownHostException;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
@@ -74,8 +79,8 @@ public class PS_One extends Activity {
         pThread.start();
     }
 
-    private Socket socket;
-    private static final int SERVERPORT = 9000;
+    //private Socket socket;
+    private static final int SERVER_PORT = 9000;
     private static final String SERVER_IP = "192.168.0.120";
     private static final  String MODE = "epsxe";
 
@@ -83,13 +88,23 @@ public class PS_One extends Activity {
         public void run() {
             try {
                 InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
+                // UDP
+                DatagramSocket client_socket = new DatagramSocket();
 
-                socket = new Socket(serverAddr, SERVERPORT);    // Toast when failed connection
+                //socket = new Socket(serverAddr, SERVER_PORT);    // Toast when failed connection
+                //UDP
+                String str = MODE + ":" + command;
+                DatagramPacket send_packet = new DatagramPacket(str.getBytes(), str.length(), serverAddr, SERVER_PORT);
 
+                client_socket.send(send_packet);
+                Log.d("UDP: ", "Packet sent: " + str);
+                client_socket.close();
+
+                /*
                 PrintWriter out = new PrintWriter(new BufferedWriter(
                         new OutputStreamWriter(socket.getOutputStream())),
                         true);
-                out.println(MODE + ":" + command);
+                out.println(MODE + ":" + command);*/
             } catch (ConnectException e) {
                 showToast("Failed to connect to server", Toast.LENGTH_SHORT);
             } /*catch (UnknownHostException e) {

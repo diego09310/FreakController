@@ -1,5 +1,7 @@
 //var net=require('net');
-var dgram = require('dgram');
+const dgram = require('dgram');
+const server = dgram.createSocket('udp4');
+
 var robot=require('robotjs');
 var exec=require('child_process').exec;
 
@@ -12,10 +14,22 @@ var bit = {select:0, start:1, up:2, right:3, down:4, left:5, l2:6, r2:7, l1:8, r
 var commands_sets = {epsxe : {select:"c", start:"j", up:"up", right:"right", down:"down", left:"left", l2:"e", r2:"p", l1:"w", r1: "l", triangle:"y", circle:"backspace", x: "x", square:"z"},
                 	 kodi  : {select:"c", start:"enter", up:"up", right:"right", down:"down", left:"left", l2:"audio_vol_down", r2:"pagedown", l1:"audio_vol_up", r1: "pageup", triangle:"escape", circle:"backspace", x: "space", square:null}};
 
+server.on('error', (err) => {
+	  console.log(`server error:\n${err.stack}`);
+	    server.close();
+});
+
+server.on('listening', function() {
+	var address = server.address();
+	console.log('UDP Server listening on ' + address.address + ":" + address.port);
+});
+
 // var server = net.createServer(finc
-net.createServer(function (socket) {
-	socket.on('data', function(data) {
-		var set_key = data.toString().slice(0, -1).split(":");
+//net.createServer(function (socket) {
+//	socket.on('data', function(data) {
+server.on('message', function(data, remote) {
+		//var set_key = data.toString().slice(0, -1).split(":");
+		var set_key = data.toString().split(":");
 		var set = set_key[0];
 		var key = parseInt(set_key[1]);
 		var commands;
@@ -30,7 +44,7 @@ net.createServer(function (socket) {
 				commands = commands_sets.kodi;
 
 		}
-		//console.log("key: '" + key + "', set: '" + set);
+		//console.log("data: '" + data + "', set: '" + set + ", key: " + key);
 		//console.log("states: " + states);
 		//console.log("new_states: " + new_states);
 		//console.log("changes: " + changes);*/
@@ -121,4 +135,6 @@ net.createServer(function (socket) {
 			console.log("Tecla no reconocida");
 		}
 	});
-}).listen(port);
+//}).listen(port);
+
+server.bind(port);
