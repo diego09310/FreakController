@@ -97,7 +97,7 @@ public class PS_One extends Activity {
                 DatagramPacket send_packet = new DatagramPacket(str.getBytes(), str.length(), serverAddr, SERVER_PORT);
 
                 client_socket.send(send_packet);
-                Log.d("UDP: ", "Packet sent: " + str);
+                // Log.d("UDP: ", "Packet sent: " + str);
                 client_socket.close();
 
                 /*
