@@ -1,6 +1,6 @@
 //var net=require('net');
-const dgram = require('dgram');
-const server = dgram.createSocket('udp4');
+var dgram = require('dgram');
+var socket = dgram.createSocket('udp4');
 
 var robot=require('robotjs');
 var exec=require('child_process').exec;
@@ -14,20 +14,20 @@ var bit = {select:0, start:1, up:2, right:3, down:4, left:5, l2:6, r2:7, l1:8, r
 var commands_sets = {epsxe : {select:"c", start:"j", up:"up", right:"right", down:"down", left:"left", l2:"e", r2:"p", l1:"w", r1: "l", triangle:"y", circle:"backspace", x: "x", square:"z"},
                 	 kodi  : {select:"c", start:"enter", up:"up", right:"right", down:"down", left:"left", l2:"audio_vol_down", r2:"pagedown", l1:"audio_vol_up", r1: "pageup", triangle:"escape", circle:"backspace", x: "space", square:null}};
 
-server.on('error', (err) => {
+socket.on('error', (err) => {
 	  console.log(`server error:\n${err.stack}`);
-	    server.close();
+	    socket.close();
 });
 
-server.on('listening', function() {
-	var address = server.address();
+socket.on('listening', function() {
+	var address = socket.address();
 	console.log('UDP Server listening on ' + address.address + ":" + address.port);
 });
 
 // var server = net.createServer(finc
 //net.createServer(function (socket) {
 //	socket.on('data', function(data) {
-server.on('message', function(data, remote) {
+socket.on('message', function(data, remote) {
 		//var set_key = data.toString().slice(0, -1).split(":");
 		var set_key = data.toString().split(":");
 		var set = set_key[0];
@@ -129,6 +129,8 @@ server.on('message', function(data, remote) {
 			} else if (changes[bit.square] == -1) {
 				robot.keyToggle(commands.square, "up");
 			}
+			socket.send("ACK", remote.port, remote.address);
+
 		} catch (err) {
 			console.log("key: '" + key + "'");
 			console.log(err);
@@ -137,4 +139,4 @@ server.on('message', function(data, remote) {
 	});
 //}).listen(port);
 
-server.bind(port);
+socket.bind(port);

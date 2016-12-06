@@ -8,18 +8,12 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.InetAddress;
-import java.net.Socket;
-//UDP
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-
-import java.net.UnknownHostException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
@@ -79,39 +73,53 @@ public class PS_One extends Activity {
         pThread.start();
     }
 
-    //private Socket socket;
+    private DatagramSocket client_socket;
     private static final int SERVER_PORT = 9000;
     private static final String SERVER_IP = "192.168.0.120";
     private static final  String MODE = "epsxe";
+    private static int socket_fail = 0;
 
     class ClientThread implements Runnable {
         public void run() {
             try {
                 InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
-                // UDP
-                DatagramSocket client_socket = new DatagramSocket();
+                client_socket = new DatagramSocket();
 
-                //socket = new Socket(serverAddr, SERVER_PORT);    // Toast when failed connection
-                //UDP
                 String str = MODE + ":" + command;
                 DatagramPacket send_packet = new DatagramPacket(str.getBytes(), str.length(), serverAddr, SERVER_PORT);
 
                 client_socket.send(send_packet);
-                // Log.d("UDP: ", "Packet sent: " + str);
+                //Log.d("UDP: ", "Packet sent: " + str);
+
+                byte[] receivedata = new byte[20];
+                DatagramPacket recv_packet = new DatagramPacket(receivedata, receivedata.length);
+                //Log.d("UDP: ", "Waiting for packet");
+                client_socket.setSoTimeout(100);
+                client_socket.receive(recv_packet);
+                // String rec_str = new String(recv_packet.getData());
+                //Log.d("UDP: ", "Packet received?");
+
+                socket_fail = 0;
                 client_socket.close();
 
-                /*
-                PrintWriter out = new PrintWriter(new BufferedWriter(
-                        new OutputStreamWriter(socket.getOutputStream())),
-                        true);
-                out.println(MODE + ":" + command);*/
-            } catch (ConnectException e) {
+            } /*catch (ConnectException e) {
+                // Not going to happen, we're not in TCP
+                // showToast("Failed to connect to server", Toast.LENGTH_SHORT);
+            } */catch (SocketTimeoutException e) {
+                e.printStackTrace();
                 showToast("Failed to connect to server", Toast.LENGTH_SHORT);
-            } /*catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/ catch (Exception e) {
+            } catch (SocketException e) {
+                if (socket_fail == 5) {
+                    socket_fail = 0;
+                    showToast("Error while connecting to server", Toast.LENGTH_SHORT);
+                    e.printStackTrace();
+                } else {
+                    socket_fail++;
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                Log.d("EEException: ", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -173,6 +181,7 @@ public class PS_One extends Activity {
 
     int poll = 0;
     boolean sendZero = false; // Indicates when to send a zero to the server to disable all keys
+    int checkServer = 0;
     class Pollster implements Runnable {
         public void run() {
             while (true) {
