@@ -14,6 +14,9 @@ var bit = {select:0, start:1, up:2, right:3, down:4, left:5, l2:6, r2:7, l1:8, r
 var commands_sets = {epsxe : {select:"c", start:"j", up:"up", right:"right", down:"down", left:"left", l2:"e", r2:"p", l1:"w", r1: "l", triangle:"y", circle:"backspace", x: "x", square:"z"},
                 	 kodi  : {select:"c", start:"enter", up:"up", right:"right", down:"down", left:"left", l2:"audio_vol_down", r2:"pagedown", l1:"audio_vol_up", r1: "pageup", triangle:"escape", circle:"backspace", x: "space", square:null}};
 
+var commands_sets = {epsxe : {select:"c", start:"m", up:"up", right:"right", down:"down", left:"left", l2:"1", r2:"2", l1:"w", r1: "l", triangle:"escape", circle:"escape", x: "enter", square:"z"}};
+
+
 socket.on('error', (err) => {
 	  console.log(`server error:\n${err.stack}`);
 	    socket.close();

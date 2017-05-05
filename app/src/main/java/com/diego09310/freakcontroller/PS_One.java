@@ -1,23 +1,29 @@
 package com.diego09310.freakcontroller;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import java.net.ConnectException;
-import java.net.InetAddress;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
-public class PS_One extends Activity {
+public class PS_One extends OptionsMenuActivity {
+
+    private static final  String MODE = "epsxe";
+    private static int socketFail = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +33,9 @@ public class PS_One extends Activity {
         JoystickView joystickCross = (JoystickView) findViewById(R.id.joystickViewCross);
         joystickCross.setOnMoveListener(new JoystickView.OnMoveListener() {
             public void onMove(int angle, int strength) {
-//                Log.d("Poll: ", String.valueOf(poll));
                 if (strength > 25) {
                     if (angle <= 22 | angle >= 337) {
                         poll |= RIGHT;
-                        // sendCommand("right");
                     } else if (angle <= 67) {
                         poll |= RIGHT|UP;
                     } else if (angle <= 112) {
@@ -57,7 +61,6 @@ public class PS_One extends Activity {
                 if (strength > 25) {
                     if (angle <= 45 | angle > 315) {
                         poll |= CIRCLE;
-                        // sendCommand("right");
                     } else if (angle <= 135) {
                         poll |= TRIANGLE;
                     } else if (angle <= 225) {
@@ -69,66 +72,69 @@ public class PS_One extends Activity {
             }
         });
 
+        Button buttonR1 = (Button) findViewById(R.id.r1_button);
+        Button buttonL1 = (Button) findViewById(R.id.l1_button);
+        Button buttonR2 = (Button) findViewById(R.id.r2_button);
+        Button buttonL2 = (Button) findViewById(R.id.l2_button);
+        buttonR1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        poll |= R1;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        poll &= ~R1;
+                        break;
+                }
+                return true;
+            }
+        });
+        buttonL1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        poll |= L1;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        poll &= ~L1;
+                        break;
+                }
+                return true;
+            }
+        });
+        buttonR2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        poll |= R2;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        poll &= ~R2;
+                        break;
+                }
+                return true;
+            }
+        });
+        buttonL2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        poll |= L2;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        poll &= ~L2;
+                        break;
+                }
+                return true;
+            }
+        });
+
         Thread pThread = new Thread(new Pollster());
         pThread.start();
-    }
-
-    private DatagramSocket client_socket;
-    private static final int SERVER_PORT = 9000;
-    private static final String SERVER_IP = "192.168.0.120";
-    private static final  String MODE = "epsxe";
-    private static int socket_fail = 0;
-
-    class ClientThread implements Runnable {
-        public void run() {
-            try {
-                InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
-                client_socket = new DatagramSocket();
-
-                String str = MODE + ":" + command;
-                DatagramPacket send_packet = new DatagramPacket(str.getBytes(), str.length(), serverAddr, SERVER_PORT);
-
-                client_socket.send(send_packet);
-                //Log.d("UDP: ", "Packet sent: " + str);
-
-                byte[] receivedata = new byte[20];
-                DatagramPacket recv_packet = new DatagramPacket(receivedata, receivedata.length);
-                //Log.d("UDP: ", "Waiting for packet");
-                client_socket.setSoTimeout(100);
-                client_socket.receive(recv_packet);
-                // String rec_str = new String(recv_packet.getData());
-                //Log.d("UDP: ", "Packet received?");
-
-                socket_fail = 0;
-                client_socket.close();
-
-            } /*catch (ConnectException e) {
-                // Not going to happen, we're not in TCP
-                // showToast("Failed to connect to server", Toast.LENGTH_SHORT);
-            } */catch (SocketTimeoutException e) {
-                e.printStackTrace();
-                showToast("Failed to connect to server", Toast.LENGTH_SHORT);
-            } catch (SocketException e) {
-                if (socket_fail == 5) {
-                    socket_fail = 0;
-                    showToast("Error while connecting to server", Toast.LENGTH_SHORT);
-                    e.printStackTrace();
-                } else {
-                    socket_fail++;
-                    e.printStackTrace();
-                }
-
-            } catch (Exception e) {
-                Log.d("EEException: ", e.getMessage());
-                e.printStackTrace();
-            }
-        }
-
-        private int command;
-
-        public void setCommand(int cmd) {
-            this.command = cmd;
-        }
     }
 
     public void sendKey(View v) {   // Change to Joystick
@@ -140,25 +146,69 @@ public class PS_One extends Activity {
             case "SELECT":
                 poll |= SELECT;
                 break;
-            case "L2":
-                poll |= L2;
-                break;
-            case "R2":
-                poll |= R2;
-                break;
-            case "L1":
-                poll |= L1;
-                break;
-            case "R1":
-                poll |= R1;
-                break;
             default:
                 break;
         }
     }
 
+    class ClientThread implements Runnable {
+        public ClientThread(Context ctx) {
+            this.ctx = ctx;
+        }
+
+        public void run() {
+            try {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+                String serverIp = sharedPreferences.getString(SettingsActivity.SERVER_IP, "");
+                int port = Integer.parseInt(sharedPreferences.getString(SettingsActivity.PORT, ""));
+                InetAddress serverAddr = InetAddress.getByName(serverIp);
+                DatagramSocket clientSocket = new DatagramSocket();
+
+                String str = MODE + ":" + command;
+                DatagramPacket sendPacket = new DatagramPacket(str.getBytes(), str.length(), serverAddr, port);
+
+                clientSocket.send(sendPacket);
+
+                byte[] receiveData = new byte[20];
+                DatagramPacket recvPacket = new DatagramPacket(receiveData, receiveData.length);
+                clientSocket.setSoTimeout(500);
+                clientSocket.receive(recvPacket);
+                // String recStr = new String(recvPacket.getData());
+
+                socketFail = 0;
+                clientSocket.close();
+
+            } catch (SocketTimeoutException e) {
+                if (socketFail == 5) {
+                    socketFail = 0;
+                    showToast("Failed to connect to server", Toast.LENGTH_SHORT);
+                } else {
+                    socketFail++;
+                }
+                Log.w("PS_One", "UDP Socket: SocketTimeoutException. No answer from server.");
+            } catch (SocketException e) {
+                if (socketFail == 5) {
+                    socketFail = 0;
+                    showToast("Error while connecting to server", Toast.LENGTH_SHORT);
+                } else {
+                    socketFail++;
+                }
+                Log.w("PS_One", "UDP Socket: SocketException. Bad connection to server.");
+            } catch (Exception e) {
+                Log.e("PS_One", "Unexpected Exception: " + e.getMessage());
+            }
+        }
+
+        private int command;
+        private Context ctx;
+
+        void setCommand(int cmd) {
+            this.command = cmd;
+        }
+    }
+
     public void sendPoll(int poll) {
-        ClientThread client = new ClientThread();
+        ClientThread client = new ClientThread(this);
         client.setCommand(poll);
         Thread cThread = new Thread(client);
         cThread.start();
@@ -181,13 +231,12 @@ public class PS_One extends Activity {
 
     int poll = 0;
     boolean sendZero = false; // Indicates when to send a zero to the server to disable all keys
-    int checkServer = 0;
     class Pollster implements Runnable {
         public void run() {
             while (true) {
                 if (poll > 0) {
                     sendPoll(poll);
-                    poll = 0;
+                    poll &= R1 | L1 | R2 | L2;
                     sendZero = true;
                 } else if (sendZero) {
                     sendPoll(0);
@@ -218,11 +267,11 @@ public class PS_One extends Activity {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.w("PS_One", "Thread.sleep interrupted.");
         }
     }
 
-    long startTime = 0;
+    private long startTime = 0;
     public void showToast(final String toast, final int toastLength) {
         // Avoid concatenate several toasts
         long difference = System.currentTimeMillis() - startTime;
@@ -236,4 +285,5 @@ public class PS_One extends Activity {
             startTime = System.currentTimeMillis();
         }
     }
+
 }
