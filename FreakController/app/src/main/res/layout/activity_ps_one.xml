@@ -1,0 +1,169 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#a7a3a5"
+    tools:context="PS_One">
+
+    <io.github.controlwear.virtual.joystick.android.JoystickView
+        android:id="@+id/joystickViewCross"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        custom:JV_buttonColor="#00000000"
+        custom:JV_borderColor="#00000000"
+        custom:JV_backgroundColor="#00000000"
+        custom:JV_borderWidth="1dp"
+        android:background="@drawable/ic_cross"
+        android:layout_alignParentBottom="true" />
+
+    <io.github.controlwear.virtual.joystick.android.JoystickView
+        android:id="@+id/joystickViewShapes"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        custom:JV_buttonColor="#00000000"
+        custom:JV_borderColor="#00000000"
+        custom:JV_backgroundColor="#00000000"
+        custom:JV_borderWidth="4dp"
+        android:background="@drawable/ic_shapes"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true" />
+
+    <CheckBox
+        android:id="@+id/analog_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/btn_check"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_centerHorizontal="true"
+        android:onClick="onAnalogCheckboxClick" />
+
+    <TextView
+        android:id="@+id/analog_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/analog_checkbox"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/analog" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/joystickViewCross"
+        android:layout_toEndOf="@id/joystickViewCross" >
+        <Button
+            android:id="@+id/select_button"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:onClick="sendKey"
+            android:tag="SELECT"
+            android:background="@drawable/ic_select"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="5dp" />
+
+        <TextView
+            android:id="@+id/select_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/select_button"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:text="@string/select" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/joystickViewShapes"
+        android:layout_toStartOf="@id/joystickViewShapes"
+        tools:ignore="RelativeOverlap">
+
+        <Button
+            android:id="@+id/start_button"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:onClick="sendKey"
+            android:tag="START"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_start" />
+
+        <TextView
+            android:id="@+id/start_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_button"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:text="@string/start" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/menu_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:tag="MENU"
+        android:onClick="settingsActivity"
+        android:background="@drawable/ps_menu"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true" />
+
+
+    <Button
+        android:id="@+id/l2_button"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:onClick="sendKey"
+        android:tag="L2"
+        android:text="@string/l2"
+        android:background="#666"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/r2_button"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:onClick="sendKey"
+        android:tag="R2"
+        android:text="@string/r2"
+        android:background="#666"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/l1_button"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:onClick="sendKey"
+        android:tag="L1"
+        android:text="@string/l1"
+        android:background="#666"
+        android:layout_marginStart="40dp"
+        android:layout_below="@id/l2_button"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/r1_button"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:onClick="sendKey"
+        android:tag="R1"
+        android:text="@string/r1"
+        android:background="#666"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="40dp"
+        android:layout_below="@id/r2_button"
+        android:layout_marginTop="10dp" />
+
+</RelativeLayout>
