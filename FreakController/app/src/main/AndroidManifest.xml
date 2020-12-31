@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.diego09310.freakcontroller">
+    package="diego09310.freakcontroller">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.diego09310.freakcontroller.PS_One"
+            android:name="diego09310.freakcontroller.PS_One"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
@@ -23,10 +23,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.diego09310.freakcontroller.SettingsActivity"
+            android:name="diego09310.freakcontroller.SettingsActivity"
             android:theme="@android:style/Theme.Material"
             android:screenOrientation="portrait"
             />
+        <activity android:name="OptionsMenuActivity" />
     </application>
 
 </manifest>

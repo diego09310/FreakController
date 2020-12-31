@@ -1,4 +1,4 @@
-package com.diego09310.freakcontroller;
+package diego09310.freakcontroller;
 
 import android.preference.PreferenceFragment;
 import android.os.Bundle;

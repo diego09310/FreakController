@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId "com.diego09310.freakcontroller"
+        applicationId "diego09310.freakcontroller"
         minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
@@ -31,8 +31,9 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
-    compile 'io.github.controlwear:virtualjoystick:0.9.9'
+    compile 'io.github.controlwear:virtualjoystick:1.9.2'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:support-vector-drawable:24.2.1'
     testCompile 'junit:junit:4.12'
+    debugImplementation 'com.android.support.test:runner:1.0.2'
 }

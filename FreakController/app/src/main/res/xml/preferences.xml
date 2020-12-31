@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference
-        android:defaultValue="192.168.1.2"
-        android:key="ip_addr"
-        android:title="@string/pref_ip_addr" />
+        android:defaultValue="@string/pref_default_ip_addr"
+        android:key="@string/pref_ip_addr_key"
+        android:title="@string/pref_ip_addr_title" />
 
     <EditTextPreference
-        android:defaultValue="9000"
-        android:key="port"
-        android:title="@string/pref_port" />
+        android:defaultValue="@string/pref_default_port"
+        android:key="@string/pref_port_key"
+        android:title="@string/pref_port_title" />
+
+    <ListPreference
+        android:defaultValue="@string/pref_default_mode"
+        android:entries="@array/list_preference_mode_labels"
+        android:entryValues="@array/list_preference_mode_values"
+        android:key="@string/pref_mode_key"
+        android:title="@string/pref_mode_title" />
 
 </PreferenceScreen>

@@ -1,4 +1,4 @@
-package com.diego09310.freakcontroller;
+package diego09310.freakcontroller;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.diego09310.freakcontroller", appContext.getPackageName());
+        assertEquals("diego09310.freakcontroller", appContext.getPackageName());
     }
 }

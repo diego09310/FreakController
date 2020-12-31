@@ -1,4 +1,4 @@
-package com.diego09310.freakcontroller;
+package diego09310.freakcontroller;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +23,6 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 public class PS_One extends OptionsMenuActivity {
 
-    private static final  String MODE = "epsxe";
     private static int socketFail = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +148,7 @@ public class PS_One extends OptionsMenuActivity {
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSfTEM_UI_FLAG_IMMERSIVE_STICKY);
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
 
@@ -177,10 +176,11 @@ public class PS_One extends OptionsMenuActivity {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx);
                 String serverIp = sharedPreferences.getString(SettingsActivity.SERVER_IP, "");
                 int port = Integer.parseInt(sharedPreferences.getString(SettingsActivity.PORT, ""));
+                String mode = sharedPreferences.getString(SettingsActivity.MODE, "");
                 InetAddress serverAddr = InetAddress.getByName(serverIp);
                 DatagramSocket clientSocket = new DatagramSocket();
 
-                String str = MODE + ":" + command;
+                String str = mode + ":" + command;
                 DatagramPacket sendPacket = new DatagramPacket(str.getBytes(), str.length(), serverAddr, port);
 
                 clientSocket.send(sendPacket);
